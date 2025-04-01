@@ -30,7 +30,13 @@
             <!-- Interaction Buttons -->
             <div class="d-flex justify-content-between align-items-center mt-4">
                 <div>
-                    <button class="btn btn-light btn-sm">Like</button>
+                    <!-- Like Button Component -->
+                    <like-button 
+                        :post-id="{{ $post->id }}" 
+                        :post-type="'tp'" 
+                        :initial-liked="{{ auth()->user()->hasLiked($post) ? 'true' : 'false' }}" 
+                        :initial-like-count="{{ $post->likeCount() }}">
+                    </like-button>
                     <button class="btn btn-light btn-sm">Share</button>
                 </div>
                 <div class="text-muted small">

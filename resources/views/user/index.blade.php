@@ -3,7 +3,6 @@
 @section('content')
 <div class="container my-5">
     <div class="tabs-container">
-        <!-- Tabs Navigation -->
         <ul class="nav nav-tabs justify-content-center" id="postTabs" role="tablist">
             <li class="nav-item" role="presentation">
                 <a class="nav-link active" id="image-tab" data-bs-toggle="tab" href="#image" role="tab" aria-controls="image" aria-selected="true">Image Posts</a>
@@ -13,7 +12,6 @@
             </li>
         </ul>
 
-        <!-- Tab Content -->
         <div class="tab-content mt-4" id="postTabsContent">
             @if($imagePosts->isEmpty() && $textPosts->isEmpty())
                 <div class="no-posts text-center mt-5">
@@ -21,7 +19,6 @@
                     <p><a href="/explore" class="btn btn-primary">Explore</a></p>
                 </div>
             @else
-                <!-- Image Posts Tab (Instagram-like) -->
                 <div class="tab-pane fade show active" id="image" role="tabpanel" aria-labelledby="image-tab">
                     <div class="row justify-content-center">
                         @foreach($imagePosts as $post)
@@ -33,15 +30,18 @@
                                         </a>
                                         <h5 class="username ms-2 mb-0">{{ $post->user->username }}</h5>
                                     </div>
-                                    <!-- Responsive image with adaptive size -->
                                     <img src="{{ asset('storage/' . $post->image) }}" alt="Post Image" class="post-image w-100" style="object-fit: cover; height: auto;">
                                     <div class="post-caption p-3">
                                         <p>{{ $post->caption }}</p>
                                     </div>
                                     <div class="post-actions p-3 d-flex justify-content-between">
-                                        <button class="action-btn like-btn btn btn-outline-primary btn-sm">
-                                            <i class="fas fa-thumbs-up"></i> Likes
-                                        </button>
+                                        <!-- Like Button Component -->
+                                        <like-button 
+                                            :post-id="{{ $post->id }}" 
+                                            :post-type="'ip'" 
+                                            :initial-liked="{{ auth()->user()->hasLiked($post) ? 'true' : 'false' }}" 
+                                            :initial-like-count="{{ $post->likeCount() }}">
+                                        </like-button>
                                         <button class="action-btn share-btn btn btn-outline-secondary btn-sm">
                                             <i class="fas fa-share"></i> Shares
                                         </button>
@@ -57,7 +57,6 @@
                     </div>
                 </div>
 
-                <!-- Text Posts Tab (Twitter-like) -->
                 <div class="tab-pane fade" id="text" role="tabpanel" aria-labelledby="text-tab">
                     <div class="row justify-content-center">
                         @foreach($textPosts as $post)
@@ -65,7 +64,7 @@
                                 <div class="post-card text-card border rounded shadow-sm">
                                     <div class="post-header p-3 d-flex align-items-center">
                                         <a href="/profile/{{ $post->user->id }}">
-                                            <img src="{{ asset( $post->user->profile->profileImage()) }}" alt="Avatar" class="avatar rounded-circle" width="40" height="40">
+                                            <img src="{{ asset($post->user->profile->profileImage()) }}" alt="Avatar" class="avatar rounded-circle" width="40" height="40">
                                         </a>
                                         <h5 class="username ms-2 mb-0">{{ $post->user->username }}</h5>
                                     </div>
@@ -73,9 +72,13 @@
                                         <p>{{ $post->description }}</p>
                                     </div>
                                     <div class="post-actions p-3 d-flex justify-content-between">
-                                        <button class="action-btn like-btn btn btn-outline-primary btn-sm">
-                                            <i class="fas fa-thumbs-up"></i> Likes
-                                        </button>
+                                        <!-- Like Button Component -->
+                                        <like-button 
+                                            :post-id="{{ $post->id }}" 
+                                            :post-type="'tp'" 
+                                            :initial-liked="{{ auth()->user()->hasLiked($post) ? 'true' : 'false' }}" 
+                                            :initial-like-count="{{ $post->likeCount() }}">
+                                        </like-button>
                                         <button class="action-btn share-btn btn btn-outline-secondary btn-sm">
                                             <i class="fas fa-share"></i> Shares
                                         </button>
@@ -95,3 +98,4 @@
     </div>
 </div>
 @endsection
+
