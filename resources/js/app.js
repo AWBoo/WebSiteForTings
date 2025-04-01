@@ -19,11 +19,13 @@ const app = createApp({});
 import ExampleComponent from './components/FollowButton.vue';
 import PostModal from './components/PostModal.vue';
 import Tabs from './components/Tabs.vue';
+import LikeButton from './components/LikeButton.vue';
 
 // Register your components globally
 app.component('follow-button', ExampleComponent);
 app.component('post-modal', PostModal);
 app.component('tabs', Tabs);
+app.component('like-button', LikeButton);
 
 
 /**

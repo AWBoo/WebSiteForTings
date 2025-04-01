@@ -78,4 +78,38 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(UserProfile::class, 'userprofile_user', 'user_id', 'userprofile_id');
     }
+
+    
+    public function hasLiked($post)
+    {
+        // Check if the post is an instance of ImagePost or TextPost
+        if ($post instanceof ImagePost || $post instanceof TextPost) {
+            return $this->likes()->where('likeable_id', $post->id)
+                                 ->where('likeable_type', get_class($post))
+                                 ->exists();
+        }
+    
+        return false;
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+    
+    public function textPostLikes()
+    {
+        return $this->morphToMany('App\Models\TextPost', 'likeable')
+                    ->withTimestamps();
+    }
+
+    public function imageLikes()
+    {
+        return $this->morphToMany(ImagePost::class, 'likeable');
+    }
+
+    public function textLikes()
+    {
+        return $this->morphToMany(TextPost::class, 'likeable');
+    }
 }
