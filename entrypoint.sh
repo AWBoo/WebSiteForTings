@@ -1,16 +1,17 @@
 #!/bin/bash
 
-# Wait for PostgreSQL to be available
-echo "Waiting for PostgreSQL..."
-while ! nc -z $DB_HOST $DB_PORT; do
+# Wait for the database to be available
+until nc -z -v -w30 $DB_HOST $DB_PORT; do
+    echo "Waiting for database connection..."
     sleep 1
 done
-echo "PostgreSQL is up!"
 
-# Run migrations
+# Run Laravel migrations
 php artisan migrate --force
 
-# Start Nginx and PHP-FPM
-echo "Starting Nginx and PHP-FPM..."
+# Start PHP-FPM and Nginx
+service php8.2-fpm start
 service nginx start
-php-fpm
+
+# Keep the container running
+tail -f /dev/null

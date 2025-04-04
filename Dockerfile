@@ -5,8 +5,8 @@ FROM php:8.2-fpm
 RUN apt-get update && apt-get install -y \
     libpng-dev libjpeg-dev libfreetype6-dev \
     zip git unzip nginx \
-    libpq-dev supervisor && \
-    netcat && \ 
+    libpq-dev supervisor \
+    netcat-openbsd && \
     rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions required by Laravel
@@ -33,8 +33,8 @@ RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache && \
 # Configure Nginx (optional, can add your own config if needed)
 COPY nginx/default.conf /etc/nginx/sites-available/default
 
-# Expose port 8080 (default for Laravel)
-EXPOSE 8080
+# Expose port 80 (for Nginx)
+EXPOSE 80
 
 # Add custom entrypoint script
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
