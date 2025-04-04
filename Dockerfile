@@ -23,5 +23,5 @@ RUN composer install --no-dev --optimize-autoloader
 # Expose port 8080 (default for Laravel)
 EXPOSE 8080
 
-# Start the PHP-FPM server
-CMD ["php-fpm"]
+# Start both PHP-FPM and Nginx
+CMD service nginx start && php-fpm
