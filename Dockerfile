@@ -5,7 +5,9 @@ FROM php:8.2-fpm
 RUN apt-get update && apt-get install -y \
     libpng-dev libjpeg-dev libfreetype6-dev \
     zip git unzip nginx \
-    libpq-dev && \
+    libpq-dev \
+    nodejs \
+    npm && \
     rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions required by Laravel
@@ -22,8 +24,11 @@ WORKDIR /var/www
 # Copy project files into container
 COPY . .
 
-# Install Laravel dependencies
+# Install Composer dependencies
 RUN composer install --no-dev --optimize-autoloader
+
+# Install Node dependencies and build assets
+RUN npm install && npm run build
 
 # Set correct permissions for Laravel storage and cache directories
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache && \
