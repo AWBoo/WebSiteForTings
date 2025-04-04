@@ -5,7 +5,7 @@ FROM php:8.2-fpm
 RUN apt-get update && apt-get install -y \
     libpng-dev libjpeg-dev libfreetype6-dev \
     zip git unzip nginx \
-    libpq-dev && \
+    libpq-dev supervisor && \
     rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions required by Laravel
@@ -35,8 +35,12 @@ COPY nginx/default.conf /etc/nginx/sites-available/default
 # Expose port 8080 (default for Laravel)
 EXPOSE 8080
 
-# Run migrations and seed the database
-RUN php artisan migrate --force
+# Add custom entrypoint script
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
-# Start both Nginx and PHP-FPM
-CMD service nginx start && php-fpm
+# Set entrypoint to run migrations and start services
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
+# Use supervisor to manage services
+CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
