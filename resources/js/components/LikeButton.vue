@@ -1,6 +1,6 @@
 <template>
-      <button @click="toggleLike" :class="{'btn-outline-primary': !liked, 'btn-primary': liked}" class="action-btn like-btn btn btn-sm">
-        <i class="fas fa-thumbs-up"></i> {{ likeCount }} Likes
+      <button @click="toggleLike" :class="{'btn-outline-primary': !liked, 'btn-danger': liked}" class="action-btn like-btn btn btn-sm">
+        <i class="fas fa-heart"></i> {{ likeCount }} Likes
       </button>
 </template>
 
