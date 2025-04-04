@@ -35,8 +35,5 @@ COPY nginx/default.conf /etc/nginx/sites-available/default
 # Expose port 8080 (default for Laravel)
 EXPOSE 8080
 
-# Run migrations and seed the database
-RUN php artisan migrate --force
-
 # Start both Nginx and PHP-FPM
 CMD service nginx start && php-fpm
