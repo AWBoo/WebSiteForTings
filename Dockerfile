@@ -23,6 +23,10 @@ COPY . .
 # Install Laravel dependencies
 RUN composer install --no-dev --optimize-autoloader
 
+# Set correct permissions for Laravel storage and cache directories
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache && \
+    chmod -R 775 /var/www/storage /var/www/bootstrap/cache
+
 # Configure Nginx (optional, can add your own config if needed)
 COPY nginx/default.conf /etc/nginx/sites-available/default
 
