@@ -36,3 +36,10 @@ Route::patch('/profile/{user}', [App\Http\Controllers\UserProfilesController::cl
 // Search Routes
 Route::get('/search', [App\Http\Controllers\UserController::class, 'showSearchPage'])->name('search.page');
 Route::get('/search/results', [App\Http\Controllers\UserController::class, 'search'])->name('search');
+
+Route::get('/debug-db', function () {
+    return [
+        'env_host' => env('DB_HOST'),
+        'config_host' => config('database.connections.pgsql.host'),
+    ];
+});
