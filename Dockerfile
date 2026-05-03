@@ -27,6 +27,12 @@ COPY . .
 # Install Composer dependencies
 RUN composer install --no-dev --optimize-autoloader
 
+
+RUN php artisan config:clear && \
+    php artisan cache:clear && \
+    php artisan config:cache && \
+    php artisan migrate --force
+
 # Install Node dependencies and build assets
 RUN npm install && npm run build
 
