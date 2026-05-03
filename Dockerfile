@@ -45,7 +45,6 @@ EXPOSE 8080
 
 # Start both Nginx and PHP-FPM
 CMD php artisan config:clear && \
-    php artisan cache:clear && \
     php artisan config:cache && \
     php artisan migrate --force && \
     service nginx start && php-fpm
